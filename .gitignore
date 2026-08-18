@@ -1,0 +1,19 @@
+# Maven
+target/
+
+# IntelliJ IDEA
+.idea
+
+
+eval "$(ssh-agent -s)"
+
+eval "$(ssh-agent -s)".pub
+
+# macOS
+.DS_Store
+
+# Java compiled files
+*.class
+
+# Environment / secrets
+.env
