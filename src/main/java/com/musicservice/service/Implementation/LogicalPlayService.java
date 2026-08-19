@@ -15,7 +15,6 @@ import java.util.List;
 public class LogicalPlayService implements IPlayService {
 
     private static LogicalPlayService instance;
-
     private final ITrackService trackService;
 
     private final MediaPlayerFactory factory;
@@ -25,12 +24,9 @@ public class LogicalPlayService implements IPlayService {
     private int currentIndex;
 
     private LogicalPlayService(ITrackService trackService) {
-
         this.trackService = trackService;
-
         this.factory = new MediaPlayerFactory();
         this.player = factory.mediaPlayers().newMediaPlayer();
-
         this.queue = new ArrayList<>();
         this.currentIndex = -1;
 
@@ -81,15 +77,12 @@ public class LogicalPlayService implements IPlayService {
 
     @Override
     public boolean pause() {
-
         int trackId = getCurrentTrackId();
-
         if (trackId == -1) {
             return false;
         }
 
         Track track = trackService.getTrackById(trackId);
-
         if (track == null) {
             return false;
         }
@@ -97,7 +90,6 @@ public class LogicalPlayService implements IPlayService {
         if (track.getPlaybackStatus() != PlaybackStatus.PLAYING) {
             return false;
         }
-
         player.controls().pause();
 
         trackService.updatePlaybackStatus(trackId, PlaybackStatus.PAUSED);
@@ -107,15 +99,12 @@ public class LogicalPlayService implements IPlayService {
 
     @Override
     public boolean resume() {
-
         int trackId = getCurrentTrackId();
-
         if (trackId == -1) {
             return false;
         }
 
         Track track = trackService.getTrackById(trackId);
-
         if (track == null) {
             return false;
         }
@@ -123,7 +112,6 @@ public class LogicalPlayService implements IPlayService {
         if (track.getPlaybackStatus() != PlaybackStatus.PAUSED) {
             return false;
         }
-
         player.controls().play();
 
         trackService.updatePlaybackStatus(trackId, PlaybackStatus.PLAYING);
@@ -133,13 +121,10 @@ public class LogicalPlayService implements IPlayService {
 
     @Override
     public boolean stop() {
-
         int trackId = getCurrentTrackId();
-
         if (trackId == -1) {
             return false;
         }
-
         player.controls().stop();
 
         trackService.updatePlaybackStatus(trackId, PlaybackStatus.STOPPED);
@@ -152,7 +137,6 @@ public class LogicalPlayService implements IPlayService {
 
     @Override
     public boolean next() {
-
         if (queue.isEmpty()) {
             return false;
         }
@@ -160,7 +144,6 @@ public class LogicalPlayService implements IPlayService {
         if (currentIndex + 1 >= queue.size()) {
             return false;
         }
-
         stopCurrentTrackStatus();
 
         currentIndex++;
@@ -170,7 +153,6 @@ public class LogicalPlayService implements IPlayService {
 
     @Override
     public boolean previous() {
-
         if (queue.isEmpty()) {
             return false;
         }
@@ -178,7 +160,6 @@ public class LogicalPlayService implements IPlayService {
         if (currentIndex <= 0) {
             return false;
         }
-
         stopCurrentTrackStatus();
 
         currentIndex--;
@@ -188,15 +169,12 @@ public class LogicalPlayService implements IPlayService {
 
     @Override
     public PlaybackStatus getStatus() {
-
         int trackId = getCurrentTrackId();
-
         if (trackId == -1) {
             return PlaybackStatus.STOPPED;
         }
 
         Track track = trackService.getTrackById(trackId);
-
         if (track == null) {
             return PlaybackStatus.STOPPED;
         }
@@ -206,7 +184,6 @@ public class LogicalPlayService implements IPlayService {
 
     @Override
     public int getCurrentTrackId() {
-
         if (queue.isEmpty()) {
             return -1;
         }
@@ -218,68 +195,40 @@ public class LogicalPlayService implements IPlayService {
         return queue.get(currentIndex);
     }
 
-    /*
-     * Internal method:
-     * gets the current Track and gives its path to VLCJ.
-     */
     private boolean playCurrentTrack() {
-
         int trackId = getCurrentTrackId();
-
         if (trackId == -1) {
             return false;
         }
 
         Track track = trackService.getTrackById(trackId);
-
         if (track == null) {
             return false;
         }
 
         String path = track.getPath();
-
         if (path == null || path.isBlank()) {
             return false;
         }
 
-        /*
-         * Ask VLCJ to play the file.
-         */
         boolean started = player.media().play(path);
-
         if (!started) {
             return false;
         }
-
-        /*
-         * Update application/database state.
-         */
         trackService.updatePlaybackStatus(trackId, PlaybackStatus.PLAYING);
 
         return true;
     }
 
-    /*
-     * Internal method:
-     * changes the current Track's status to STOPPED.
-     */
     private void stopCurrentTrackStatus() {
-
         int trackId = getCurrentTrackId();
-
         if (trackId == -1) {
             return;
         }
-
         trackService.updatePlaybackStatus(trackId, PlaybackStatus.STOPPED);
     }
 
-    /*
-     * Release native VLC resources when the
-     * application is shutting down.
-     */
     public void release() {
-
         player.release();
         factory.release();
     }
