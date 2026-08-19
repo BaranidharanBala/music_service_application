@@ -3,7 +3,10 @@ target/
 
 # IntelliJ IDEA
 .idea
-
+.mvn
+target
+mvnw
+mvnw.cmd
 
 eval "$(ssh-agent -s)"
 
