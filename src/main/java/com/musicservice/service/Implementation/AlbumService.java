@@ -16,14 +16,14 @@ public class AlbumService implements IAlbumService {
 
     private static AlbumService instance;
     private final IAlbumRepository albumRepository;
-    ITrackService trackService;
-    IPlayService playService;
+    private ITrackService trackService;
+    private IPlayService playService;
 
     private AlbumService(IAlbumRepository albumRepository) {
         this.albumRepository = albumRepository;
     }
 
-    public static AlbumService getInstance(IAlbumRepository albumRepository) {
+    public static synchronized AlbumService getInstance(IAlbumRepository albumRepository) {
         if (instance == null) {
             instance = new AlbumService(albumRepository);
         }

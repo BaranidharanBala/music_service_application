@@ -20,7 +20,7 @@ public class UserService implements IUserService {
         this.userRepository = userRepository;
     }
 
-    public static UserService getInstance(IUserRepository userRepository) {
+    public static synchronized UserService getInstance(IUserRepository userRepository) {
         if (instance == null) {
             instance = new UserService(userRepository);
         }

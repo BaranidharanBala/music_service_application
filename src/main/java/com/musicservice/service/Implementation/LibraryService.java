@@ -19,7 +19,7 @@ public class LibraryService implements ILibraryService {
         this.libraryRepository = libraryRepository;
     }
 
-    public static LibraryService getInstance(ILibraryRepository libraryRepository) {
+    public static synchronized LibraryService getInstance(ILibraryRepository libraryRepository) {
         if (instance == null) {
             instance = new LibraryService(libraryRepository);
         }

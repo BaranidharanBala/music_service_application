@@ -33,7 +33,7 @@ public class LogicalPlayService implements IPlayService {
         registerPlayerListener();
     }
 
-    public static LogicalPlayService getInstance(ITrackService trackService) {
+    public static synchronized LogicalPlayService getInstance(ITrackService trackService) {
         if (instance == null) {
             instance = new LogicalPlayService(trackService);
         }

@@ -23,7 +23,7 @@ public class TrackService implements ITrackService {
         this.trackRepository = trackRepository;
     }
 
-    public static TrackService getInstance(ITrackRepository trackRepository) {
+    public static synchronized TrackService getInstance(ITrackRepository trackRepository) {
         if (instance == null) {
             instance = new TrackService(trackRepository);
         }

@@ -33,7 +33,7 @@ public class ArtistController implements IArtistController {
         this.albumService = albumService;
     }
 
-    public static ArtistController getInstance(IView view, IArtistService artistService, ITrackService trackService, IAlbumService albumService) {
+    public static synchronized ArtistController getInstance(IView view, IArtistService artistService, ITrackService trackService, IAlbumService albumService) {
         if (instance == null) {
             instance = new ArtistController(view, artistService, trackService, albumService);
         }

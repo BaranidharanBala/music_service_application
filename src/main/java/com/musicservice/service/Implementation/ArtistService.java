@@ -27,7 +27,7 @@ public class ArtistService implements IArtistService {
         this.artistRepository = artistRepository;
     }
 
-    public static ArtistService getInstance(IArtistRepository artistRepository) {
+    public static synchronized ArtistService getInstance(IArtistRepository artistRepository) {
         if (instance == null) {
             instance = new ArtistService(artistRepository);
         }

@@ -22,7 +22,7 @@ public class PlaylistService implements IPlaylistService {
         this.playlistRepository = playlistRepository;
     }
 
-    public static PlaylistService getInstance(IPlaylistRepository playlistRepository) {
+    public static synchronized PlaylistService getInstance(IPlaylistRepository playlistRepository) {
         if (instance == null) {
             instance = new PlaylistService(playlistRepository);
         }
